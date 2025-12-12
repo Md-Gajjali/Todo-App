@@ -15,7 +15,19 @@ import {  ToastContainer ,toast ,Bounce } from 'react-toastify';
 
         const[task,setTask]=useState("")
 
-        const notify = () => toast("plz inout the fill",{
+        const notify = () => {
+          task == "" ?
+          toast.error("plz inout the fill",{
+           position: "top-right",
+           autoClose: 5000,
+           hideProgressBar: false,
+           closeOnClick: false,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           theme: "light",
+           transition: Bounce,
+         }) : toast.success('you are succses full!', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -25,7 +37,8 @@ import {  ToastContainer ,toast ,Bounce } from 'react-toastify';
           progress: undefined,
           theme: "light",
           transition: Bounce,
-        }); 
+          })
+        }
 
 
         const handleEmail = (e)=> {
@@ -40,7 +53,10 @@ import {  ToastContainer ,toast ,Bounce } from 'react-toastify';
              const db = getDatabase();
              set(push(ref(db, 'Todo/'), {
                Todos: task
-                }));
+                }).than(
+                  notify(),
+                  setTask("")
+                ));
             
           }
         }
