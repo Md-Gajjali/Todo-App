@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Heading from './Componets/Heading'
 import Animation from './Componets/Animation.jsx'
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set,push } from "firebase/database";
 import {  ToastContainer ,toast ,Bounce } from 'react-toastify';
 
 
@@ -32,15 +32,15 @@ import {  ToastContainer ,toast ,Bounce } from 'react-toastify';
           setTask(e.target.value);
         }
 
-        const handleBtn = (e) => {
+        const handleClick = (e) => {
           e.preventDefault()
           if (task == "") {
             notify()
           }else{
              const db = getDatabase();
-             set(ref(db, 'Todo/'), {
-               Todo: task
-                });
+             set(push(ref(db, 'Todo/'), {
+               Todos: task
+                }));
             
           }
         }
@@ -63,7 +63,7 @@ import {  ToastContainer ,toast ,Bounce } from 'react-toastify';
                   <button 
                   type="submit" 
                   className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
-                  onClick={handleBtn}>Submit</button>
+                  onClick={handleClick}>Submit</button>
                 </form>
 
 
