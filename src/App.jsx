@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Heading from './Componets/Heading'
 import Animation from './Componets/Animation.jsx'
-import { getDatabase, ref, set, push } from "firebase/database";
+import { getDatabase, ref, set, push ,onValue } from "firebase/database";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
@@ -14,6 +14,7 @@ function App() {
 
 
   const [task, setTask] = useState("")
+  const [Todos,setTodos]=useState([])
 
   const notify = () => {
     task == "" ?
@@ -51,15 +52,35 @@ function App() {
       notify()
     } else {
       const db = getDatabase();
-      set(push(ref(db, 'Todo/'), {
-        Todos: task
-      }).than(
-        notify(),
-        setTask("")
-      ));
-
+      const newRef = push(ref(db, 'Todo/')); 
+      
+      set(newRef, { TodoName: task })
+        .then(() => {
+          notify();
+          setTask("");
+        })
     }
   }
+
+  useEffect(()=>{
+    const db = getDatabase();
+    const TodoRef = ref(db, 'Todo/');
+    onValue(TodoRef, (items) => {
+      // const data = items.val();
+      // Arry.push(data)
+      // setTodos(Arry)
+      
+      const Arry = [];
+      items.forEach((item)=>{
+        Arry.push(item.val());
+        setTodos(Arry)
+      })
+    });
+    
+  },[])
+
+  console.log(Todos);
+  
 
   return (
 
@@ -67,8 +88,8 @@ function App() {
       <Heading />
       <div className="relative z-10">
         <div>
-
           <form className=" mx-auto rounded-4xl bg-transparent backdrop-blur-3xl px-20 py-30  w-[500px] text-center mt-20 items-center ">
+            <h1 className='text-3xl text-white mb-5 text-start'>Add Too your Task</h1>
             <div className="mb-5">
               <input type="text"
                 id=""
@@ -83,7 +104,14 @@ function App() {
 
             <div className='mt-20'>
               <ul className="w-full text-sm font-medium text-heading bg-neutral-primary-soft border border-default rounded-base">
-                <li className="w-full px-4 py-2 border-b border-default rounded-t-lg"></li>
+               {
+                 Todos.map((snapshot)=>{
+                   return(
+                      <li className="w-full px-4 text-start py-2 border-b border-default rounded-t-lg">{snapshot.TodoName}</li> 
+
+                  )
+                })
+               }
               </ul>
             </div>
           </form>

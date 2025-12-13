@@ -153,24 +153,33 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 1, intensity = 3, size = 1 
         const uSizeLocation = gl.getUniformLocation(program, 'uSize');
 
         const startTime = performance.now();
+        let rafId = null;
         const render = () => {
             resizeCanvas();
             gl.viewport(0, 0, canvas.width, canvas.height);
-            gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
+            // Ensure the correct program is active before setting uniforms
+            gl.useProgram(program);
+            if (iResolutionLocation) gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
             const currentTime = performance.now();
-            gl.uniform1f(iTimeLocation, (currentTime - startTime) / 1000.0);
-            gl.uniform1f(uHueLocation, hue);
-            gl.uniform1f(uXOffsetLocation, xOffset);
-            gl.uniform1f(uSpeedLocation, speed);
-            gl.uniform1f(uIntensityLocation, intensity);
-            gl.uniform1f(uSizeLocation, size);
+            if (iTimeLocation) gl.uniform1f(iTimeLocation, (currentTime - startTime) / 1000.0);
+            if (uHueLocation) gl.uniform1f(uHueLocation, hue);
+            if (uXOffsetLocation) gl.uniform1f(uXOffsetLocation, xOffset);
+            if (uSpeedLocation) gl.uniform1f(uSpeedLocation, speed);
+            if (uIntensityLocation) gl.uniform1f(uIntensityLocation, intensity);
+            if (uSizeLocation) gl.uniform1f(uSizeLocation, size);
             gl.drawArrays(gl.TRIANGLES, 0, 6);
-            requestAnimationFrame(render);
+            rafId = requestAnimationFrame(render);
         };
-        requestAnimationFrame(render);
+        rafId = requestAnimationFrame(render);
 
         return () => {
             window.removeEventListener('resize', resizeCanvas);
+            if (rafId) cancelAnimationFrame(rafId);
+            // Optional cleanup
+            try { if (vertexBuffer) gl.deleteBuffer(vertexBuffer); } catch (e) { }
+            try { if (program) gl.deleteProgram(program); } catch (e) { }
+            try { if (vertexShader) gl.deleteShader(vertexShader); } catch (e) { }
+            try { if (fragmentShader) gl.deleteShader(fragmentShader); } catch (e) { }
         };
     }, [hue, xOffset, speed, intensity, size]);
 
