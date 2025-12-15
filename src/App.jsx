@@ -107,7 +107,6 @@ function App() {
 
 
   function handleEdit( value ,  id) {
-    // e.preventDefault()
     setEdit(!edit)
     setEditTask(value);
     setId(id)
@@ -129,7 +128,7 @@ function App() {
                   <input type="text"
                     id=""
                     typeof="button"
-                    value={task}
+                    value={editTask}
                     className="bg-neutral-secondary-medium border-none   text-heading text-sm rounded-base   block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                     placeholder="update your task"
                     onChange={handleEmail}/> 
@@ -167,13 +166,13 @@ function App() {
                         <div className='flex justify-between gap-5'>
 
                           <button
-                            className='text-gray-700 text-3xl'
-                            onClick={(e)=>{
+                              className='text-gray-700 text-3xl'
+                              onClick={(e)=>{
                               e.preventDefault()
                               handleEdit(snapshot.value.TodoName , snapshot.id)
-                            } }
-                            typeof='button'>
-                            <FaEdit />
+                              } }
+                              typeof='button'>
+                              <FaEdit />
                           </button>
 
                           <button className='text-red-500 text-3xl'
