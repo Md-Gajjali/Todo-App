@@ -7,14 +7,14 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAhriv_Y6PE6w_zYvmYOBlm307KX0_SIfA",
-  authDomain: "second-todo-app-c422e.firebaseapp.com",
-  databaseURL: "https://second-todo-app-c422e-default-rtdb.firebaseio.com",
-  projectId: "second-todo-app-c422e",
-  storageBucket: "second-todo-app-c422e.firebasestorage.app",
-  messagingSenderId: "439880955154",
-  appId: "1:439880955154:web:5260408dae9575b6532fcb",
-  measurementId: "G-HH5R19FJB0"
+  apiKey: "AIzaSyA9selShXfI8jEfXSUA7xQL0KsBcTv4DD8",
+  authDomain: "todo-app-62846.firebaseapp.com",
+  databaseURL: "https://todo-app-62846-default-rtdb.firebaseio.com",
+  projectId: "todo-app-62846",
+  storageBucket: "todo-app-62846.firebasestorage.app",
+  messagingSenderId: "402517887676",
+  appId: "1:402517887676:web:ca7a17aab4b77f11779eb9",
+  measurementId: "G-2WCZ1Z18PE"
 };
 
 // Initialize Firebase
