@@ -15,7 +15,10 @@ function App() {
 
   const [task, setTask] = useState("")
   const [Todos, setTodos] = useState([]);
-  const [cng, setCng] = useState(false)
+  const [edit, setEdit] = useState(false)
+  const [editTask, setEditTask] = useState("");
+  const [id ,setId] = useState(1)
+
 
   const notify = () => {
     task == "" ?
@@ -103,9 +106,11 @@ function App() {
   }
 
 
-  function handleEdit(e) {
-    e.preventDefault()
-    setCng(!cng)
+  function handleEdit( value ,  id) {
+    // e.preventDefault()
+    setEdit(!edit)
+    setEditTask(value);
+    setId(id)
   }
 
 
@@ -119,25 +124,35 @@ function App() {
           <form className=" mx-auto rounded-4xl bg-transparent backdrop-blur-3xl px-20 py-30  w-[500px] text-center mt-20 items-center ">
             <h1 className='text-3xl text-white mb-5 text-start'>Add Too your Task</h1>
             <div className="mb-5">
-              <input type="text"
-                id=""
-                value={task}
-                className="bg-neutral-secondary-medium border-none   text-heading text-sm rounded-base   block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                placeholder="FIl the input"
-                onChange={handleEmail}
-              />
+              {
+                edit ?
+                  <input type="text"
+                    id=""
+                    typeof="button"
+                    value={task}
+                    className="bg-neutral-secondary-medium border-none   text-heading text-sm rounded-base   block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="update your task"
+                    onChange={handleEmail}/> 
+                    :
+                  <input type="text"
+                    id=""
+                    value={task}
+                    className="bg-neutral-secondary-medium border-none   text-heading text-sm rounded-base   block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="Add your task"
+                    onChange={handleEmail} />
+              }
             </div>
                {
-                cng ? 
-                <button
-                  type="submit"
-                  className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
-                  onClick={handleClick}
-                  typeof='button'>Submit</button> 
-                  :
+                edit ? 
                 <button
                   type="submit"
                   className="text-white bg-pink box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+                  onClick={handleClick}
+                  typeof='button'>Update</button> 
+                  :
+                <button
+                  type="submit"
+                  className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
                   onClick={handleClick}
                   typeof='button'>Submit</button>
               }
@@ -153,7 +168,10 @@ function App() {
 
                           <button
                             className='text-gray-700 text-3xl'
-                            onClick={handleEdit}
+                            onClick={(e)=>{
+                              e.preventDefault()
+                              handleEdit(snapshot.value.TodoName , snapshot.id)
+                            } }
                             typeof='button'>
                             <FaEdit />
                           </button>
